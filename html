@@ -1,0 +1,1624 @@
+html
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Микрогосударства Европы — экономико-географический анализ</title>
+
+<meta name="description" content="Индивидуальный проект: экономико-географический анализ пяти микрогосударств Европы — Андорры, Монако, Сан-Марино, Лихтенштейна и Ватикана." />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+
+:root{
+
+--bg:#050912;
+
+--panel:rgba(14,24,46,.72);
+
+--line:rgba(120,180,255,.16);
+
+--cy:#4ef0ff;
+
+--vi:#9a6bff;
+
+--am:#ffc861;
+
+--gr:#5cffb1;
+
+--txt:#e6eeff;
+
+--muted:#93a7c9;
+
+--r:18px;
+
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+
+margin:0;
+
+background:
+
+radial-gradient(900px 600px at 12% -8%, rgba(78,240,255,.10), transparent 60%),
+
+radial-gradient(800px 520px at 92% 6%, rgba(154,107,255,.12), transparent 60%),
+
+var(--bg);
+
+color:var(--txt);
+
+font:16px/1.65 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+
+-webkit-font-smoothing:antialiased;
+
+overflow-x:hidden;
+
+}
+
+h1,h2,h3,h4{line-height:1.2;margin:0 0 .5em}
+
+h1{font-size:clamp(30px,5vw,58px);letter-spacing:-.02em}
+
+h2{font-size:clamp(24px,3.2vw,38px);letter-spacing:-.01em}
+
+h3{font-size:clamp(18px,2vw,22px)}
+
+p{margin:0 0 1em;color:#cdd9ef}
+
+a{color:var(--cy);text-decoration:none}
+
+a:hover{text-decoration:underline}
+
+.muted{color:var(--muted)}
+
+.wrap{width:min(1160px,92vw);margin-inline:auto}
+
+/ ── навигация ── /
+
+.nav{
+
+position:sticky;top:0;z-index:50;
+
+backdrop-filter:blur(14px);
+
+background:rgba(5,9,18,.78);
+
+border-bottom:1px solid var(--line);
+
+}
+
+.nav__in{display:flex;align-items:center;gap:22px;padding:12px 0;overflow-x:auto}
+
+.nav__brand{font-weight:800;letter-spacing:.06em;font-size:13px;white-space:nowrap;color:#fff}
+
+.nav__brand span{color:var(--cy)}
+
+.nav a{font-size:14px;color:var(--muted);white-space:nowrap}
+
+.nav a:hover{color:var(--cy);text-decoration:none}
+
+/ ── секции ── /
+
+section{padding:clamp(48px,7vw,92px) 0;scroll-margin-top:70px}
+
+.eyebrow{
+
+display:inline-block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+
+color:var(--cy);border:1px solid rgba(78,240,255,.35);border-radius:999px;
+
+padding:5px 14px;margin-bottom:16px;background:rgba(78,240,255,.06);
+
+}
+
+.lead{font-size:clamp(16px,1.5vw,19px);color:#b9c8e2;max-width:70ch}
+
+/ ── hero ── /
+
+.hero{padding-top:clamp(36px,6vw,70px)}
+
+.hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+
+@media(max-width:860px){.hero__grid{grid-template-columns:1fr}}
+
+.hero h1 em{
+
+font-style:normal;
+
+background:linear-gradient(100deg,var(--cy),var(--vi) 70%);
+
+-webkit-background-clip:text;background-clip:text;color:transparent;
+
+}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+.stat{
+
+border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+
+background:var(--panel);
+
+}
+
+.stat b{display:block;font-size:clamp(19px,2.4vw,26px);color:#fff;letter-spacing:-.01em}
+
+.stat small{color:var(--muted);font-size:12.5px;line-height:1.35;display:block}
+
+/ ── 3D голограмма ── /
+
+.holo{display:grid;place-items:center;position:relative;min-height:340px}
+
+.holo__glow{
+
+position:absolute;inset:auto 0 4% 0;height:180px;
+
+background:radial-gradient(closest-side, rgba(78,240,255,.28), transparent 72%);
+
+filter:blur(14px);pointer-events:none;
+
+}
+
+.holo__base{
+
+position:absolute;bottom:6%;width:min(280px,72%);height:26px;border-radius:50%;
+
+border:1px solid rgba(78,240,255,.45);
+
+box-shadow:0 0 40px rgba(78,240,255,.35), inset 0 0 30px rgba(78,240,255,.2);
+
+}
+
+.scan{
+
+position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:screen;
+
+background:repeating-linear-gradient(180deg, rgba(78,240,255,.16) 0 1px, transparent 1px 4px);
+
+animation:scan 7s linear infinite;
+
+}
+
+@keyframes scan{to{background-position-y:400px}}
+
+.cube{perspective:900px}
+
+.cube__box{
+
+position:relative;width:var(--s,150px);height:var(--s,150px);
+
+transform-style:preserve-3d;
+
+animation:spin 26s linear infinite;
+
+}
+
+.cube__box span{
+
+position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+
+font-weight:800;font-size:calc(var(--s,150px) / 9);letter-spacing:.02em;
+
+color:var(--cy);
+
+border:1px solid rgba(78,240,255,.5);
+
+background:linear-gradient(160deg, rgba(78,240,255,.10), rgba(154,107,255,.10));
+
+box-shadow:inset 0 0 28px rgba(78,240,255,.22), 0 0 22px rgba(78,240,255,.16);
+
+backface-visibility:visible;
+
+}
+
+.cube__box span small{display:block;font-size:.52em;font-weight:600;color:#9fd8ff;letter-spacing:.06em}
+
+.cube__box span:nth-child(1){transform:translateZ(calc(var(--s,150px) / 2))}
+
+.cube__box span:nth-child(2){transform:rotateY(90deg) translateZ(calc(var(--s,150px) / 2))}
+
+.cube__box span:nth-child(3){transform:rotateY(180deg) translateZ(calc(var(--s,150px) / 2))}
+
+.cube__box span:nth-child(4){transform:rotateY(-90deg) translateZ(calc(var(--s,150px) / 2))}
+
+.cube__box span:nth-child(5){transform:rotateX(90deg) translateZ(calc(var(--s,150px) / 2))}
+
+.cube__box span:nth-child(6){transform:rotateX(-90deg) translateZ(calc(var(--s,150px) / 2))}
+
+@keyframes spin{
+
+0%{transform:rotateX(-18deg) rotateY(0deg)}
+
+100%{transform:rotateX(-18deg) rotateY(360deg)}
+
+}
+
+@media (prefers-reduced-motion: reduce){
+
+.cube__box,.scan{animation:none}
+
+html{scroll-behavior:auto}
+
+}
+
+/ ── карточки ── /
+
+.grid{display:grid;gap:18px}
+
+.g2{grid-template-columns:repeat(2,1fr)}
+
+.g3{grid-template-columns:repeat(3,1fr)}
+
+.g5{grid-template-columns:repeat(5,1fr)}
+
+@media(max-width:980px){.g3,.g5{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:640px){.g2,.g3,.g5{grid-template-columns:1fr}}
+
+.card{
+
+border:1px solid var(--line);border-radius:var(--r);
+
+background:var(--panel);padding:22px;
+
+transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+
+}
+
+.card:hover{transform:translateY(-3px);border-color:rgba(78,240,255,.4);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+
+.card h4{margin:0 0 6px;font-size:16px;color:#fff}
+
+.card p{font-size:14.5px;margin:0;color:#b7c6e0}
+
+.card .num{font-size:12px;letter-spacing:.16em;color:var(--vi);text-transform:uppercase;margin-bottom:10px;display:block}
+
+/ страна /
+
+.country{position:relative;overflow:hidden}
+
+.country__head{display:flex;gap:18px;align-items:center;margin-bottom:16px}
+
+.country__head h3{margin:0}
+
+.country__meta{font-size:13px;color:var(--muted)}
+
+.rows{display:grid;gap:0;margin-top:6px}
+
+.row{
+
+display:grid;grid-template-columns:118px 1fr;gap:12px;
+
+padding:11px 0;border-top:1px dashed rgba(120,180,255,.14);font-size:14.5px;
+
+}
+
+.row dt{color:var(--muted);font-size:13px;margin:0}
+
+.row dd{margin:0;color:#dae5f8}
+
+.badge{
+
+display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;
+
+border:1px solid rgba(78,240,255,.35);color:var(--cy);background:rgba(78,240,255,.07);
+
+}
+
+.badge--vi{border-color:rgba(154,107,255,.4);color:#c3aaff;background:rgba(154,107,255,.08)}
+
+/ таймлайн /
+
+.timeline{position:relative;display:grid;gap:18px;margin-top:26px}
+
+.timeline::before{
+
+content:"";position:absolute;left:15px;top:6px;bottom:6px;width:1px;
+
+background:linear-gradient(180deg,var(--cy),rgba(154,107,255,.5),transparent);
+
+}
+
+.tl{position:relative;padding-left:52px}
+
+.tl::before{
+
+content:"";position:absolute;left:9px;top:8px;width:13px;height:13px;border-radius:50%;
+
+background:#08101f;border:1px solid var(--cy);box-shadow:0 0 14px rgba(78,240,255,.8);
+
+}
+
+.tl b{color:#fff}
+
+.tl span{color:var(--cy);font-weight:800;margin-right:10px}
+
+/ диаграммы /
+
+.chart-card{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:20px}
+
+.chart-card h4{margin:0 0 4px;font-size:16px;color:#fff}
+
+.chart-card .sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+
+.chart-box{position:relative;height:300px}
+
+@media(max-width:640px){.chart-box{height:260px}}
+
+.note{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+/ таблица /
+
+.table-wrap{
+
+border:1px solid var(--line);border-radius:var(--r);overflow:auto;background:var(--panel);
+
+}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:720px}
+
+th,td{padding:13px 16px;text-align:left;border-bottom:1px solid rgba(120,180,255,.1)}
+
+th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(78,240,255,.04)}
+
+tbody tr:hover{background:rgba(78,240,255,.05)}
+
+td:first-child{color:#fff;font-weight:600}
+
+caption{caption-side:bottom;padding:14px 16px;text-align:left;font-size:12.5px;color:var(--muted)}
+
+/ выводы /
+
+.concl{display:grid;gap:14px;counter-reset:c}
+
+.concl__item{
+
+display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;
+
+border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--panel);
+
+}
+
+.concl__item::before{
+
+counter-increment:c;content:counter(c);
+
+display:grid;place-items:center;width:40px;height:40px;border-radius:12px;
+
+font-weight:800;color:var(--cy);
+
+border:1px solid rgba(78,240,255,.4);background:rgba(78,240,255,.08);
+
+}
+
+.concl__item p{margin:0;font-size:15px}
+
+/ источники /
+
+.sources{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+
+.sources a{
+
+display:block;border:1px solid var(--line);border-radius:12px;padding:12px 14px;
+
+font-size:14px;background:rgba(14,24,46,.55);color:#cfe0ff;
+
+}
+
+.sources a:hover{border-color:rgba(78,240,255,.45);text-decoration:none;color:#fff}
+
+.sources small{display:block;color:var(--muted);font-size:12px}
+
+footer{border-top:1px solid var(--line);padding:34px 0 60px;font-size:13.5px;color:var(--muted)}
+
+footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+
+/ появление при скролле /
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+
+.reveal.is-in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none}}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="nav">
+
+<div class="wrap nav__in">
+
+<div class="nav__brand">MICRO<span>·</span>STATES</div>
+
+<a href="#intro">Введение</a>
+
+<a href="#method">Методика</a>
+
+<a href="#ch1">Глава 1</a>
+
+<a href="#ch2">Глава 2</a>
+
+<a href="#charts">Диаграммы</a>
+
+<a href="#compare">Сравнение</a>
+
+<a href="#conclusion">Выводы</a>
+
+<a href="#sources">Источники</a>
+
+</div>
+
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+
+<header class="hero wrap">
+
+<div class="hero__grid">
+
+<div>
+
+<span class="eyebrow">Индивидуальный проект · 2026–2027</span>
+
+<h1>Микрогосударства <em>Европы</em></h1>
+
+<p class="lead">
+
+Экономико-географический анализ пяти государств: территория, население, ВВП,
+
+туризм и налоговые режимы. Опыт показывает: масштаб страны не определяет
+
+уровень её благосостояния.
+
+</p>
+
+<p class="muted" style="font-size:14px">
+
+Выполнил: Никита Толстиков, группа Э-26-1 · Руководитель: Яна Рыжкова ·
+
+Автотранспортный колледж (ПКТС)
+
+</p>
+
+<div class="stats">
+
+<div class="stat"><b>5</b><small>государств в анализе</small></div>
+
+<div class="stat"><b>692 км²</b><small>суммарная площадь — меньше Москвы (2 561 км²)</small></div>
+
+<div class="stat"><b>≈193 тыс.</b><small>суммарное население</small></div>
+
+<div class="stat"><b>$230 тыс.</b><small>ВВП на душу в Монако</small></div>
+
+</div>
+
+</div>
+
+<div class="holo">
+
+<div class="holo__glow"></div>
+
+<div class="holo__base"></div>
+
+<div class="scan"></div>
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:170px">
+
+<span>AND<small>468 км²</small></span>
+
+<span>MCO<small>2,08 км²</small></span>
+
+<span>SMR<small>61 км²</small></span>
+
+<span>LIE<small>160 км²</small></span>
+
+<span>VAT<small>0,49 км²</small></span>
+
+<span>692<small>км² всего</small></span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ══════════ ВВЕДЕНИЕ ══════════ -->
+
+<section id="intro">
+
+<div class="wrap">
+
+<span class="eyebrow">Введение</span>
+
+<h2>Актуальность и научный аппарат</h2>
+
+<p class="lead">
+
+Пять микрогосударств Европы занимают около 692 км² — меньше площади Москвы — и
+
+насчитывают примерно 193 тыс. жителей. При этом каждое остаётся суверенным
+
+государством с высоким уровнем дохода. Именно этот контраст между
+
+микроскопическим масштабом и экономической устойчивостью делает их удобной
+
+моделью для исследования.
+
+</p>
+
+<div class="grid g2" style="margin-top:26px">
+
+<div class="card">
+
+<span class="num">Гипотеза</span>
+
+<h4>Малый размер — не помеха развитию</h4>
+
+<p>Небольшая территория и малочисленное население не препятствуют устойчивому
+
+экономическому развитию и сохранению государственной независимости.</p>
+
+</div>
+
+<div class="card">
+
+<span class="num">Объект и предмет</span>
+
+<h4>Что именно изучается</h4>
+
+<p><strong>Объект</strong> — микрогосударства Европы.
+
+<strong>Предмет</strong> — их географические, исторические, экономические и
+
+социальные особенности.</p>
+
+</div>
+
+</div>
+
+<h3 style="margin-top:40px">Задачи исследования</h3>
+
+<div class="grid g3">
+
+<div class="card"><span class="num">01</span><p>Раскрыть понятие и признаки микрогосударства</p></div>
+
+<div class="card"><span class="num">02</span><p>Изучить историю становления пяти государств</p></div>
+
+<div class="card"><span class="num">03</span><p>Описать географию и население</p></div>
+
+<div class="card"><span class="num">04</span><p>Проанализировать экономику и туризм</p></div>
+
+<div class="card"><span class="num">05</span><p>Сравнить налоговые режимы</p></div>
+
+<div class="card"><span class="num">06</span><p>Оценить уровень жизни и качество данных</p></div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ МЕТОДИКА ══════════ -->
+
+<section id="method" style="background:linear-gradient(180deg,transparent,rgba(154,107,255,.05),transparent)">
+
+<div class="wrap">
+
+<span class="eyebrow">Методика</span>
+
+<h2>Данные и ограничения</h2>
+
+<div class="grid g2" style="margin-top:22px">
+
+<div class="card">
+
+<h4>Источники данных</h4>
+
+<p>Всемирный банк, МВФ, IMSEE (статистика Монако), национальные статистические
+
+службы, UN Tourism, официальные сайты правительств.</p>
+
+</div>
+
+<div class="card">
+
+<h4>Период наблюдений</h4>
+
+<p>ВВП — 2022–2023 гг.; туристические потоки — 2024–2025 гг.; налоговые ставки —
+
+по состоянию на 2025 г.</p>
+
+</div>
+
+<div class="card">
+
+<h4>Методы анализа</h4>
+
+<p>Статистический и сравнительный анализ, кейс-метод, обобщение и визуализация
+
+показателей.</p>
+
+</div>
+
+<div class="card">
+
+<h4>Ограничения</h4>
+
+<p>Ватикан не публикует ВВП; методики учёта туристов различаются; часть
+
+показателей — расчётные оценки. Все стоимостные величины приведены в долларах
+
+США, кроме Монако: там ВВП публикуется в евро по данным IMSEE.</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ ГЛАВА 1 ══════════ -->
+
+<section id="ch1">
+
+<div class="wrap">
+
+<span class="eyebrow">Глава 1 · 1.1</span>
+
+<h2>Понятие и критерии</h2>
+
+<p class="lead">
+
+Микрогосударство — суверенное государство с очень небольшой территорией и
+
+населением. Единого международного определения нет: в литературе используют
+
+критерии площади (до 1 тыс. км²) и численности населения (до 1 млн человек).
+
+</p>
+
+<div class="grid g5" style="margin-top:24px">
+
+<div class="card"><h4>Малая площадь</h4><p>От 0,49 км² (Ватикан) до 468 км² (Андорра)</p></div>
+
+<div class="card"><h4>Малое население</h4><p>От менее 1 тыс. до 80 тыс. человек</p></div>
+
+<div class="card"><h4>Суверенитет</h4><p>Своя система управления, законы, символика, членство в ООН</p></div>
+
+<div class="card"><h4>Особое положение</h4><p>Анклавы или прибрежные территории на границе крупных стран</p></div>
+
+<div class="card"><h4>Специализация</h4><p>Туризм, финансы, торговля и услуги вместо массовой промышленности</p></div>
+
+</div>
+
+<h3 style="margin-top:44px">1.2. История возникновения</h3>
+
+<p class="lead">
+
+Становление этих государств связано со Средневековьем, борьбой за автономию и
+
+изменением границ. Прослеживаются два пути: сохранение древних традиций
+
+(Сан-Марино, Андорра, Монако) и политико-правовое оформление в новое время
+
+(Лихтенштейн, Ватикан).
+
+</p>
+
+<div class="timeline">
+
+<div class="tl"><span>301</span><b>Сан-Марино.</b> Основано христианином Марином на горе
+
+Монте-Титано; автономия сохранилась благодаря труднодоступному положению.</div>
+
+<div class="tl"><span>1278</span><b>Андорра.</b> Соглашение о совместном управлении между
+
+французскими и испанскими светскими и церковными властями.</div>
+
+<div class="tl"><span>1297</span><b>Монако.</b> Семья Гримальди установила контроль над
+
+крепостью; со временем сложилось самостоятельное княжество.</div>
+
+<div class="tl"><span>1719</span><b>Лихтенштейн.</b> Объединение владений Вадуц и Шелленберг
+
+в княжество; независимость — с 1806 года.</div>
+
+<div class="tl"><span>1929</span><b>Ватикан.</b> Латеранские соглашения между Святым престолом
+
+и Италией признали суверенитет государства.</div>
+
+</div>
+
+<h3 style="margin-top:44px">1.3. География и население</h3>
+
+<div class="grid g5" style="margin-top:18px">
+
+<div class="card"><h4>Андорра · 80 тыс.</h4><p>Пиренеи, между Францией и Испанией</p></div>
+
+<div class="card"><h4>Монако · 39 тыс.</h4><p>Средиземноморское побережье, рядом с Францией</p></div>
+
+<div class="card"><h4>Сан-Марино · 34 тыс.</h4><p>Анклав на территории Италии</p></div>
+
+<div class="card"><h4>Лихтенштейн · 39 тыс.</h4><p>Между Швейцарией и Австрией</p></div>
+
+<div class="card"><h4>Ватикан · менее 1 тыс.</h4><p>Анклав в центре Рима</p></div>
+
+</div>
+
+<div class="grid g3" style="margin-top:18px">
+
+<div class="card"><span class="num">Плотность</span><h4>≈ 19 тыс./км²</h4><p>Плотность населения в Монако — одна из самых высоких в мире</p></div>
+
+<div class="card"><span class="num">Население</span><h4>80 тыс.</h4><p>Крупнейшее население — в Андорре; более трети территории занимают горы</p></div>
+
+<div class="card"><span class="num">Площадь</span><h4>692 км²</h4><p>Суммарная площадь пяти государств — меньше площади Москвы</p></div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ ГЛАВА 2 ══════════ -->
+
+<section id="ch2" style="background:linear-gradient(180deg,transparent,rgba(78,240,255,.05),transparent)">
+
+<div class="wrap">
+
+<span class="eyebrow">Глава 2 · 2.1</span>
+
+<h2>Пять государств: экономика, туризм, налоги</h2>
+
+<p class="lead">
+
+Андорра (468 км² · 80 тыс.) — туризм и торговля. Монако (2,08 км² · 39 тыс.) —
+
+финансы и услуги. Сан-Марино (61 км² · 34 тыс.) — туризм и промышленность.
+
+Лихтенштейн (160 км² · 39 тыс.) — промышленность и финансы. Ватикан
+
+(0,49 км² · менее 1 тыс.) — музеи и религиозная деятельность. Итого: 692 км² и
+
+около 193 тыс. человек на пять суверенных государств.
+
+</p>
+
+<div class="grid g2" style="margin-top:26px">
+
+<!-- Андорра -->
+
+<article class="card country">
+
+<div class="country__head">
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:84px"><span>AND</span><span>468</span><span>80k</span><span>10%</span><span>01</span><span>AND</span></div>
+
+</div>
+
+<div>
+
+<h3>Андорра</h3>
+
+<div class="country__meta">Княжество · Пиренеи · столица Андорра-ла-Велья</div>
+
+</div>
+
+</div>
+
+<dl class="rows">
+
+<div class="row"><dt>Экономика</dt><dd>ВВП ≈ $3,8 млрд (2023), на душу ≈ $47 тыс. Основа — торговля и услуги.</dd></div>
+
+<div class="row"><dt>Туризм</dt><dd>До 9 млн посетителей в год, до 80 % ВВП: курорты, шопинг, термы Кальдеа.</dd></div>
+
+<div class="row"><dt>Налоги</dt><dd>Прибыль — 10 %, IGI (НДС) — 4,5 %, подоходный — 0–10 %.</dd></div>
+
+<div class="row"><dt>Модель</dt><dd>Низкие налоги и туристический поток. Риск — зависимость от сезона и соседних рынков.</dd></div>
+
+</dl>
+
+</article>
+
+<!-- Монако -->
+
+<article class="card country">
+
+<div class="country__head">
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:84px"><span>MCO</span><span>2,08</span><span>39k</span><span>33%</span><span>02</span><span>MCO</span></div>
+
+</div>
+
+<div>
+
+<h3>Монако</h3>
+
+<div class="country__meta">Княжество · Средиземноморье · столица Монако</div>
+
+</div>
+
+</div>
+
+<dl class="rows">
+
+<div class="row"><dt>Экономика</dt><dd>ВВП €8,34 млрд (2022), на душу ≈ $230 тыс. Финансы, недвижимость, услуги.</dd></div>
+
+<div class="row"><dt>Туризм</dt><dd>6,7 млн визитов (2025), ≈ €1,4 млрд прямых расходов; 92,5 % — однодневные.</dd></div>
+
+<div class="row"><dt>Налоги</dt><dd>Прибыль — 33,33 %, НДС — 20 %, подоходный — 0 % для резидентов.</dd></div>
+
+<div class="row"><dt>Модель</dt><dd>Финансы и премиальные услуги. Резиденты не платят подоходный, кроме граждан Франции.</dd></div>
+
+</dl>
+
+</article>
+
+<!-- Сан-Марино -->
+
+<article class="card country">
+
+<div class="country__head">
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:84px"><span>SMR</span><span>61</span><span>34k</span><span>17%</span><span>03</span><span>SMR</span></div>
+
+</div>
+
+<div>
+
+<h3>Сан-Марино</h3>
+
+<div class="country__meta">Республика · анклав в Италии · столица Сан-Марино</div>
+
+</div>
+
+</div>
+
+<dl class="rows">
+
+<div class="row"><dt>Экономика</dt><dd>ВВП ≈ $2,0 млрд (2023), на душу ≈ $59 тыс. Промышленность, банки, туризм.</dd></div>
+
+<div class="row"><dt>Туризм</dt><dd>2,1 млн посетителей (2025) — рекорд с 2008 года. Крепости Монте-Титано, музеи.</dd></div>
+
+<div class="row"><dt>Налоги</dt><dd>Прибыль — 17 %, потребналог (monofase) — 17 %, подоходный — до 35 %.</dd></div>
+
+<div class="row"><dt>Модель</dt><dd>Промышленный экспорт и историко-культурный туризм в таможенном союзе с Италией.</dd></div>
+
+</dl>
+
+</article>
+
+<!-- Лихтенштейн -->
+
+<article class="card country">
+
+<div class="country__head">
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:84px"><span>LIE</span><span>160</span><span>39k</span><span>12,5</span><span>04</span><span>LIE</span></div>
+
+</div>
+
+<div>
+
+<h3>Лихтенштейн</h3>
+
+<div class="country__meta">Княжество · между Швейцарией и Австрией · столица Вадуц</div>
+
+</div>
+
+</div>
+
+<dl class="rows">
+
+<div class="row"><dt>Экономика</dt><dd>ВВП $7,43 млрд (2022), на душу $207 тыс. (2023). Промышленность и финансы.</dd></div>
+
+<div class="row"><dt>Туризм</dt><dd>Второстепенная отрасль: замки Вадуц и Гутенберг, горные маршруты, транзит.</dd></div>
+
+<div class="row"><dt>Налоги</dt><dd>Прибыль — 12,5 %, НДС — 8,1 % (ставка Швейцарии), подоходный — до 28 %.</dd></div>
+
+<div class="row"><dt>Модель</dt><dd>Высокотехнологичная промышленность и финансовый центр при населении менее 40 тыс. человек.</dd></div>
+
+</dl>
+
+</article>
+
+<!-- Ватикан -->
+
+<article class="card country">
+
+<div class="country__head">
+
+<div class="cube" aria-hidden="true">
+
+<div class="cube__box" style="--s:84px"><span>VAT</span><span>0,49</span><span>1k</span><span>0%</span><span>05</span><span>VAT</span></div>
+
+</div>
+
+<div>
+
+<h3>Ватикан</h3>
+
+<div class="country__meta">Государство-город · анклав в Риме · столица Ватикан</div>
+
+</div>
+
+</div>
+
+<dl class="rows">
+
+<div class="row"><dt>Экономика</dt><dd>ВВП не публикуется. Доходы музеев ≈ €100 млн, пожертвования, филателия, монеты.</dd></div>
+
+<div class="row"><dt>Туризм</dt><dd>≈ 7 млн посетителей музеев (2024): собор Святого Петра, Сикстинская капелла.</dd></div>
+
+<div class="row"><dt>Налоги</dt><dd>Налогов нет: доходы — добровольные взносы, бюджет — Святой престол.</dd></div>
+
+<div class="row"><dt>Модель</dt><dd>Экономика встроена в религиозную и культурную миссию; показатели не сопоставимы с другими странами.</dd></div>
+
+</dl>
+
+</article>
+
+<!-- Итог -->
+
+<article class="card country" style="display:grid;place-items:center;text-align:center">
+
+<div class="cube" aria-hidden="true" style="margin-bottom:8px">
+
+<div class="cube__box" style="--s:110px"><span>5<small>стран</small></span><span>692<small>км²</small></span><span>193<small>тыс.</small></span><span>€$<small>ВВП</small></span><span>TOUR<small>туризм</small></span><span>TAX<small>налоги</small></span></div>
+
+</div>
+
+<h3>Итого по пяти государствам</h3>
+
+<p class="muted">692 км² и около 193 тыс. человек — суммарно меньше площади Москвы.</p>
+
+<span class="badge badge--vi">Территория не определяет доход</span>
+
+</article>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ ДИАГРАММЫ ══════════ -->
+
+<section id="charts">
+
+<div class="wrap">
+
+<span class="eyebrow">Глава 2 · 2.2 – 2.3</span>
+
+<h2>Сравнительный анализ в цифрах</h2>
+
+<p class="lead">ВВП — 2022–2023 гг.; туризм — 2024–2025 гг.; налоговые ставки — 2025 г.
+
+Для Монако ВВП пересчитан из евро.</p>
+
+<div class="grid g2" style="margin-top:26px">
+
+<div class="chart-card">
+
+<h4>ВВП: абсолютные объёмы</h4>
+
+<p class="sub">Млрд долларов США. Ватикан не ведёт национальных счетов в сопоставимом формате.</p>
+
+<div class="chart-box"><canvas id="chartGdp"></canvas></div>
+
+</div>
+
+<div class="chart-card">
+
+<h4>ВВП на душу населения</h4>
+
+<p class="sub">Тыс. долларов США на человека.</p>
+
+<div class="chart-box"><canvas id="chartCapita"></canvas></div>
+
+<p class="note">Разрыв в 4–5 раз объясняется структурой экономики: финансы и
+
+высокотехнологичная промышленность дают большую добавленную стоимость, чем
+
+туризм и торговля.</p>
+
+</div>
+
+<div class="chart-card">
+
+<h4>Туризм как драйвер экономики</h4>
+
+<p class="sub">Млн посетителей в год, 2024–2025 гг.</p>
+
+<div class="chart-box"><canvas id="chartTourism"></canvas></div>
+
+<p class="note">Показатели не полностью сопоставимы: Андорра и Сан-Марино
+
+учитывают туристов, Монако — все визиты (92,5 % однодневные), Ватикан —
+
+посетителей музеев. Лихтенштейн сопоставимого учёта не ведёт.</p>
+
+</div>
+
+<div class="chart-card">
+
+<h4>Налоговые ставки</h4>
+
+<p class="sub">Налог на прибыль и максимальная ставка подоходного налога, %.</p>
+
+<div class="chart-box"><canvas id="chartTax"></canvas></div>
+
+<p class="note">Ставки приведены по состоянию на 2025 г. и носят справочный
+
+характер: режимы периодически меняются, возможны специальные режимы и исключения.</p>
+
+</div>
+
+<div class="chart-card">
+
+<h4>Структура населения</h4>
+
+<p class="sub">Доля каждого государства в суммарных ≈193 тыс. жителей.</p>
+
+<div class="chart-box"><canvas id="chartPop"></canvas></div>
+
+</div>
+
+<div class="chart-card">
+
+<h4>Территория: пять государств и Москва</h4>
+
+<p class="sub">Км². Для сравнения — площадь Москвы.</p>
+
+<div class="chart-box"><canvas id="chartArea"></canvas></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ ТАБЛИЦА ══════════ -->
+
+<section id="compare" style="background:linear-gradient(180deg,transparent,rgba(154,107,255,.05),transparent)">
+
+<div class="wrap">
+
+<span class="eyebrow">Сравнение</span>
+
+<h2>Сводная таблица показателей</h2>
+
+<div class="table-wrap" style="margin-top:22px">
+
+<table>
+
+<caption>Площадь и население — по официальным данным; ВВП — 2022–2023 гг.
+
+Сравнение подтверждает: размер территории не определяет уровень дохода.</caption>
+
+<thead>
+
+<tr>
+
+<th>Государство</th><th>Площадь</th><th>Население</th>
+
+<th>ВВП</th><th>ВВП на душу</th><th>Налог на прибыль</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr><td>Андорра</td><td>468 км²</td><td>80 тыс.</td><td>≈ $3,8 млрд</td><td>≈ $47 тыс.</td><td>10 %</td></tr>
+
+<tr><td>Монако</td><td>2,08 км²</td><td>39 тыс.</td><td>≈ $8,8 млрд</td><td>≈ $230 тыс.</td><td>33,33 %</td></tr>
+
+<tr><td>Сан-Марино</td><td>61 км²</td><td>34 тыс.</td><td>$2,03 млрд</td><td>≈ $59 тыс.</td><td>17 %</td></tr>
+
+<tr><td>Лихтенштейн</td><td>160 км²</td><td>39 тыс.</td><td>$7,43 млрд</td><td>$207 тыс.</td><td>12,5 %</td></tr>
+
+<tr><td>Ватикан</td><td>0,49 км²</td><td>менее 1 тыс.</td><td>н/д</td><td>—</td><td>нет</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ══════════ ВЫВОДЫ ══════════ -->
+
+<section id="conclusion">
+
+<div class="wrap">
+
+<span class="eyebrow">Заключение</span>
+
+<h2>Гипотеза подтвердилась</h2>
+
+<div class="concl" style="margin-top:24px">
+
+<div class="concl__item"><p>Пять государств занимают 692 км² с населением около
+
+193 тыс. человек, но каждое сохраняет суверенитет и устойчивую экономику.</p></div>
+
+<div class="concl__item"><p>Модели различны: туризм (Андорра, Сан-Марино), финансы и
+
+услуги (Монако, Лихтенштейн), религиозно-культурная деятельность (Ватикан).</p></div>
+
+<div class="concl__item"><p>ВВП на душу населения в Монако и Лихтенштейне — один из
+
+самых высоких в мире: около $207–230 тыс. на человека.</p></div>
+
+<div class="concl__item"><p>Низкие и умеренные налоги сочетаются с высокой стоимостью
+
+жизни; устойчивость обеспечивают специализация и связи с соседними экономиками.</p></div>
+
+</div>
+
+<p style="margin-top:22px"><span class="badge">Цель достигнута</span>
+
+<span class="badge">Задачи выполнены</span>
+
+<span class="badge badge--vi">Гипотеза подтверждена</span></p>
+
+</div>
+
+</section>
+
+<!-- ══════════ ИСТОЧНИКИ ══════════ -->
+
+<section id="sources" style="background:linear-gradient(180deg,transparent,rgba(78,240,255,.04))">
+
+<div class="wrap">
+
+<span class="eyebrow">Источники</span>
+
+<h2>Данные и литература</h2>
+
+<div class="sources" style="margin-top:22px">
+
+<a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank Open Data<small>data.worldbank.org</small></a>
+
+<a href="https://www.imf.org" target="_blank" rel="noopener">International Monetary Fund<small>imf.org</small></a>
+
+<a href="https://www.imsee.mc" target="_blank" rel="noopener">IMSEE — статистика Монако<small>imsee.mc</small></a>
+
+<a href="https://www.unwto.org" target="_blank" rel="noopener">UN Tourism<small>untourism.int</small></a>
+
+<a href="https://www.govern.ad" target="_blank" rel="noopener">Правительство Андорры<small>govern.ad</small></a>
+
+<a href="https://www.gouv.mc" target="_blank" rel="noopener">Правительство Монако<small>gouv.mc</small></a>
+
+<a href="https://www.gov.sm" target="_blank" rel="noopener">Правительство Сан-Марино<small>gov.sm · visitsanmarino.com</small></a>
+
+<a href="https://www.regierung.li" target="_blank" rel="noopener">Правительство Лихтенштейна<small>regierung.li</small></a>
+
+<a href="https://www.vaticanstate.va" target="_blank" rel="noopener">Государство Ватикан<small>vaticanstate.va</small></a>
+
+<a href="https://www.britannica.com" target="_blank" rel="noopener">Encyclopaedia Britannica<small>britannica.com</small></a>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<div class="wrap">
+
+<div>Индивидуальный проект · Микрогосударства Европы · 2026–2027</div>
+
+<div>Никита Толстиков, гр. Э-26-1 · руководитель Яна Рыжкова</div>
+
+</div>
+
+</footer>
+
+<script>
+
+/ ───────── диаграммы ───────── /
+
+(function () {
+
+if (!window.Chart) return;
+
+Chart.defaults.color = '#93a7c9';
+
+Chart.defaults.font.family = '"Segoe UI", system-ui, sans-serif';
+
+Chart.defaults.font.size = 12.5;
+
+Chart.defaults.borderColor = 'rgba(120,180,255,.12)';
+
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+
+Chart.defaults.plugins.legend.labels.padding = 14;
+
+const CY = '#4ef0ff', VI = '#9a6bff', AM = '#ffc861', GR = '#5cffb1';
+
+const grid = { color: 'rgba(120,180,255,.10)', drawTicks: false };
+
+const noGrid = { display: false };
+
+const tip = {
+
+backgroundColor: 'rgba(8,16,34,.95)',
+
+borderColor: 'rgba(78,240,255,.35)',
+
+borderWidth: 1,
+
+titleColor: '#e6eeff',
+
+bodyColor: '#b9c8e2',
+
+padding: 10,
+
+displayColors: false
+
+};
+
+/ 1. ВВП абсолютный /
+
+new Chart(document.getElementById('chartGdp'), {
+
+type: 'bar',
+
+data: {
+
+labels: ['Монако', 'Лихтенштейн', 'Андорра', 'Сан-Марино', 'Ватикан'],
+
+datasets: [{
+
+label: 'млрд $',
+
+data: [8.8, 7.43, 3.8, 2.03, null],
+
+backgroundColor: ['rgba(78,240,255,.55)', 'rgba(78,240,255,.42)',
+
+'rgba(154,107,255,.55)', 'rgba(154,107,255,.42)',
+
+'rgba(147,167,201,.15)'],
+
+borderColor: [CY, 'rgba(78,240,255,.6)', VI, 'rgba(154,107,255,.6)', 'rgba(147,167,201,.3)'],
+
+borderWidth: 1,
+
+borderRadius: 8,
+
+borderSkipped: false
+
+}]
+
+},
+
+options: {
+
+responsive: true, maintainAspectRatio: false,
+
+plugins: { legend: { display: false }, tooltip: tip },
+
+scales: {
+
+x: { grid: noGrid, ticks: { maxRotation: 0, autoSkip: false } },
+
+y: { beginAtZero: true, grid, ticks: { callback: v => v + ' млрд' } }
+
+}
+
+}
+
+});
+
+/ 2. ВВП на душу /
+
+new Chart(document.getElementById('chartCapita'), {
+
+type: 'bar',
+
+data: {
+
+labels: ['Монако', 'Лихтенштейн', 'Сан-Марино', 'Андорра'],
+
+datasets: [{
+
+label: 'тыс. $',
+
+data: [230, 207, 59, 47],
+
+backgroundColor: ['rgba(78,240,255,.55)', 'rgba(78,240,255,.42)',
+
+'rgba(255,200,97,.5)', 'rgba(255,200,97,.38)'],
+
+borderColor: [CY, 'rgba(78,240,255,.7)', AM, 'rgba(255,200,97,.7)'],
+
+borderWidth: 1, borderRadius: 8, borderSkipped: false
+
+}]
+
+},
+
+options: {
+
+indexAxis: 'y',
+
+responsive: true, maintainAspectRatio: false,
+
+plugins: { legend: { display: false }, tooltip: tip },
+
+scales: {
+
+x: { beginAtZero: true, grid, ticks: { callback: v => v + ' тыс.' } },
+
+y: { grid: noGrid }
+
+}
+
+}
+
+});
+
+/ 3. Туризм /
+
+new Chart(document.getElementById('chartTourism'), {
+
+type: 'bar',
+
+data: {
+
+labels: ['Андорра', 'Ватикан (музеи)', 'Монако', 'Сан-Марино'],
+
+datasets: [{
+
+label: 'млн посетителей',
+
+data: [9, 7, 6.7, 2.1],
+
+backgroundColor: 'rgba(154,107,255,.5)',
+
+borderColor: VI, borderWidth: 1, borderRadius: 8, borderSkipped: false
+
+}]
+
+},
+
+options: {
+
+responsive: true, maintainAspectRatio: false,
+
+plugins: { legend: { display: false }, tooltip: tip },
+
+scales: {
+
+x: { grid: noGrid, ticks: { maxRotation: 0, autoSkip: false } },
+
+y: { beginAtZero: true, grid, ticks: { callback: v => v + ' млн' } }
+
+}
+
+}
+
+});
+
+/ 4. Налоги /
+
+new Chart(document.getElementById('chartTax'), {
+
+type: 'bar',
+
+data: {
+
+labels: ['Андорра', 'Монако', 'Сан-Марино', 'Лихтенштейн', 'Ватикан'],
+
+datasets: [
+
+{
+
+label: 'На прибыль',
+
+data: [10, 33.33, 17, 12.5, 0],
+
+backgroundColor: 'rgba(78,240,255,.5)',
+
+borderColor: CY, borderWidth: 1, borderRadius: 6, borderSkipped: false
+
+},
+
+{
+
+label: 'Подоходный (макс.)',
+
+data: [10, 0, 35, 28, 0],
+
+backgroundColor: 'rgba(255,200,97,.45)',
+
+borderColor: AM, borderWidth: 1, borderRadius: 6, borderSkipped: false
+
+}
+
+]
+
+},
+
+options: {
+
+responsive: true, maintainAspectRatio: false,
+
+plugins: { legend: { position: 'bottom' }, tooltip: tip },
+
+scales: {
+
+x: { grid: noGrid, ticks: { maxRotation: 0, autoSkip: false } },
+
+y: { beginAtZero: true, grid, ticks: { callback: v => v + ' %' } }
+
+}
+
+}
+
+});
+
+/ 5. Население /
+
+new Chart(document.getElementById('chartPop'), {
+
+type: 'doughnut',
+
+data: {
+
+labels: ['Андорра', 'Монако', 'Лихтенштейн', 'Сан-Марино', 'Ватикан'],
+
+datasets: [{
+
+data: [80, 39, 39, 34, 0.8],
+
+backgroundColor: ['rgba(78,240,255,.65)', 'rgba(154,107,255,.65)',
+
+'rgba(255,200,97,.6)', 'rgba(92,255,177,.6)',
+
+'rgba(147,167,201,.6)'],
+
+borderColor: 'rgba(5,9,18,.9)',
+
+borderWidth: 2
+
+}]
+
+},
+
+options: {
+
+responsive: true, maintainAspectRatio: false, cutout: '58%',
+
+plugins: {
+
+legend: { position: 'bottom' },
+
+tooltip: { ...tip, callbacks: { label: c => c.label + ': ' + c.parsed + ' тыс. чел.' } }
+
+}
+
+}
+
+});
+
+/ 6. Площадь /
+
+new Chart(document.getElementById('chartArea'), {
+
+type: 'bar',
+
+data: {
+
+labels: ['Андорра', 'Лихтенштейн', 'Сан-Марино', 'Монако', 'Ватикан', 'Москва (для сравнения)'],
+
+datasets: [{
+
+label: 'км²',
+
+data: [468, 160, 61, 2.08, 0.49, 2561],
+
+backgroundColor: ['rgba(78,240,255,.5)', 'rgba(78,240,255,.42)',
+
+'rgba(78,240,255,.34)', 'rgba(154,107,255,.55)',
+
+'rgba(154,107,255,.4)', 'rgba(147,167,201,.22)'],
+
+borderColor: [CY, CY, CY, VI, VI, 'rgba(147,167,201,.45)'],
+
+borderWidth: 1, borderRadius: 8, borderSkipped: false
+
+}]
+
+},
+
+options: {
+
+responsive: true, maintainAspectRatio: false,
+
+plugins: { legend: { display: false }, tooltip: tip },
+
+scales: {
+
+x: { grid: noGrid, ticks: { maxRotation: 0, autoSkip: false, font: { size: 11 } } },
+
+y: { type: 'logarithmic', grid, ticks: { callback: v => v + ' км²' } }
+
+}
+
+}
+
+});
+
+/ появление блоков при скролле /
+
+const items = document.querySelectorAll('.card, .chart-card, .concl__item, .table-wrap, .timeline .tl');
+
+items.forEach(el => el.classList.add('reveal'));
+
+if ('IntersectionObserver' in window) {
+
+const io = new IntersectionObserver((entries) => {
+
+entries.forEach(e => {
+
+if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+
+});
+
+}, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+
+items.forEach(el => io.observe(el));
+
+} else {
+
+items.forEach(el => el.classList.add('is-in'));
+
+}
+
+})();
+
+</script>
+
+</body>
+
+</html>
